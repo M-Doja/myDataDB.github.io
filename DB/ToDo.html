@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <title>myDataDB | ToDoDB</title>
+        <meta name="description"
+              content="Introduction to IndexedDB">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs
+/font-awesome/4.1.0/css/font-awesome.min.css" >
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs
+/font-awesome/4.1.0/fonts/FontAwesome.otf" >
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs
+/font-awesome/4.1.0/fonts/fontawesome-webfont.eot" >
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs
+/font-awesome/4.1.0/fonts/fontawesome-webfont.svg" >
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs
+/font-awesome/4.1.0/fonts/fontawesome-webfont.ttf" >
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs
+/font-awesome/4.1.0/fonts/fontawesome-webfont.woff" >
+<link rel="stylesheet" href="CSS/sidenav.css" media="screen" title="no title" charset="utf-8">
+        <style>
+            h1 {
+                text-align: center;
+                color:#999;
+            }
+
+            ul li {
+                font-size: 1.35em;
+                margin-top: 1em;
+                margin-bottom: 1em;
+            }
+
+            ul li.small {
+                font-style: italic;
+            }
+
+            footer {
+                margin-top: 25px;
+                border-top: 1px solid #eee;
+                padding-top: 25px;
+            }
+
+            i[data-id] {
+                cursor: pointer;
+                color: #eee;
+            }
+
+            i[data-id]:hover {
+                color: #c75a6d;
+            }
+
+            .push-down {
+                margin-top: 25px;
+            }
+
+            #save-button {
+                margin-left: 10px;
+            }
+        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr
+/2.8.2/modernizr.min.js" ></script>
+    </head>
+    <body>
+      <div id="mySidenav" class="sidenav" style="background-color:#000;">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <!-- <a></a> -->
+        <h2 class="text-center"style="background:#fff;border-radius:5px 5px 5px 5px;margin:0 15px;"><img src="img/DB-icon.png" alt="" width="37" />myDataDB</h2><br>
+        <!-- <hr style="width: 150px;"> -->
+        <a href="Home.html" onclick="closeNav()" >Home</a>
+        <a href="About.html" onclick="closeNav()">About</a><hr>
+        <h3 style="background:#fff;border-radius:5px 5px 5px 5px;margin:0 40px;"><img src="img/DB-icon.png" alt="" width="25" />Databases</h3>
+        <a href="ToDo.html" onclick="closeNav()"><h4 class="active">ToDo List</h4></a>
+        <a href="Shop.html" onclick="closeNav()" ><h4>Shopping List</h4></a>
+        <a href="Blog.html" onclick="closeNav()"><h4>Blog</h4></a>
+        <a href="Note.html" onclick="closeNav()" ><h4>Notes</h4></a>
+        <a href="Dates.html" onclick="closeNav()" ><h4>Dates</h4></a>
+        <a href="Music.html" onclick="closeNav()" ><h4>Music Collection</h4></a>
+        <a href="Movie.html" onclick="closeNav()" ><h4>Movie Collection</h4></a><hr>
+        <a href="#" id="leave" onclick="leave()">Logout</a>
+      </div>
+      <!-- Use any element to open/show the overlay navigation menu -->
+      <span id="open_span" onclick="openNav()">☰ MENU</span>
+      <!-- <span onclick="openNav()">open</span> -->
+      <script type="text/javascript">
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+        function leave(){
+      		document.location.href = "../index.html";
+      		closeNav();
+      	}
+      </script>
+      <div class=""style="background:#000; height:80px; width:100%; margin-top:-20px;">
+        <p class="navbar-text navbar-left"><img src="img/DB-icon.png" alt="" width="37" /><span>myDataDB</span></p>
+      </div>
+
+      <!-- ========================================================================= -->
+
+
+        <h1>ToDo List</h1>
+        <div id="unsupported-message"
+             class="alert alert-warning"
+             style="display:none;">
+            <b>Aww snap!</b> Your browser does not support indexedDB.
+        </div>
+        <div id="ui-container" class="container">
+          <h3><span id="dataCount"></span> Items</h3>
+            <div class="col-sm-3">
+                <a href="#" id="delete-all-btn" class="btn-xs">
+                    <i class="fa fa-trash-o"></i> Delete All</a>
+                <hr/>
+                <ul id="list-container" class="list-unstyled"></ul>
+            </div>
+
+            <div class="col-sm-8 push-down">
+                <input type="hidden" id="id-hidden" />
+                <input
+                       id="title-text"
+                       type="text"
+                       class="form-control"
+                       tabindex="1"
+                       placeholder="Task ToDo"
+                       autofocus /><br />
+
+                <textarea
+                          id="notes-text"
+                          class="form-control"
+                          tabindex="2"
+                          placeholder="Short ToDo Description"></textarea>
+
+                <div class="pull-right push-down">
+
+                    <a href="#" id="clear-button" tabindex="4">Clear</a>
+
+                    <button id="save-button"
+                            tabindex="3"
+                            class="btn btn-default btn-primary">
+                                <i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="DBjs/ToDo/ToDo.js" type="text/javascript"></script>
+        <script src="DBjs/ToDo/ToDo.ui.js" type="text/javascript"></script>
+        <script id="note-template" type="text/template">
+            <li>
+                <i data-id="{ID}" class="fa fa-minus-circle"></i>
+                <a href="#" data-id="{ID}">{TITLE}</a>
+            </li>
+        </script>
+        <script id="empty-note" type="text/template">
+            <li class="text-muted small">No tasks</li>
+        </script>
+    </body>
+</html>
